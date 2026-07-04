@@ -51,35 +51,19 @@ Le script utilise l’API HaveIBeenPwned (gratuite). Pas besoin de clé API – 
 
 Si tu veux juste tester, lance-le directement :
 
-bash
+bash :
 python3 main.py
+
 ▶️ 6. LANCER LE TOOL
 bash
 python3 main.py
-Tu verras :
-
-L’effet Matrix au démarrage.
-
-La demande de prénom.
-
-Le menu principal avec les options :
-
-[1] Rechercher une personne (par email principalement)
-
-[2] Voir les archives
-
-[3] Paramètres
-
-[4] Crédits
-
-[0] Quitter
 
 🧠 7. COMMENT FAIRE UNE RECHERCHE
 Dans le menu, tape 1.
 
-Remplis les champs. Pour HaveIBeenPwned, seul l’email est pris en compte (le nom, prénom, pseudo sont ignorés par l’API gratuite).
+Remplis les champs. 
 
-Valide, et les fuites connues pour cet email s’afficheront.
+Valide, et les fuites connues s’afficheront.
 
 Exemple de recherche :
 
@@ -88,7 +72,7 @@ Nom (vide pour ignorer) :
 Prénom (vide pour ignorer) : 
 Pseudo (vide pour ignorer) : 
 Email (vide pour ignorer) : toi@exemple.com
-Le script affichera les sites où ton email a fuité (ex: LinkedIn, Adobe, etc.)
+Le script affichera les fuites
 
 ❓ DÉPANNAGE RAPIDE
 Problème	Solution
@@ -106,4 +90,4 @@ python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
 python3 main.py
-Et voilà ! C’est open-source, gratuit, et ça tourne sur n’importe 
+Et voilà ! C’est open-source, gratuit, et ça tourne sur n’importe  quel linux 
