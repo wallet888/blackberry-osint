@@ -1,0 +1,5 @@
+#!/usr/bin/env python3
+from cli import menu_principal
+
+if __name__ == "__main__":
+    menu_principal()
