@@ -84,6 +84,8 @@ Menu principal.
 
 C’est bon, ça tourne !
 
+
+
 🪟 POUR WINDOWS (version courte, adaptée)
 Ouvre PowerShell ou Invité de commandes.
 
@@ -121,6 +123,7 @@ python3 : commande introuvable	Installe Python : sudo apt install python3 python
 pip install échoue	Vérifie que (venv) est actif. Sinon, refais source venv/bin/activate.
 nano : commande introuvable (Chromebook)	Utilise vim ou vi si présent, ou installe nano : sudo apt install nano.
 ModuleNotFoundError: No module named 'dotenv'	Refais pip install -r requirements.txt (après avoir activé venv).
+
 ✅ RÉSUMÉ – LA COMMANDE ULTIME (mais pas magique)
 Pour Linux / Chromebook :
 
@@ -133,6 +136,8 @@ pip install -r requirements.txt
 cp .env.example .env
 nano .env   # ← remplace ta_cle_ici par TA clé
 python3 main.py
+
+
 Pour Windows :
 
 cmd
