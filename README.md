@@ -125,13 +125,13 @@ nano : commande introuvable (Chromebook)	Utilise vim ou vi si présent, ou insta
 ModuleNotFoundError: No module named 'dotenv'	Refais pip install -r requirements.txt (après avoir activé venv).
 
 ✅ RÉSUMÉ – LA COMMANDE ULTIME (mais pas magique)
-Pour Linux / Chromebook :
-
-
+windows :
 
 🚀 COMMANDE ULTIME POUR WINDOWS (COPIE-COLLE UNIQUE)
+
 cmd
 git clone https://github.com/wallet888/blackberry-osint.git && cd blackberry-osint && python -m venv venv && venv\Scripts\activate && pip install -r requirements.txt && copy .env.example .env && notepad .env && python main.py
+
 🔥 CE QUE ÇA FAIT EN DÉTAIL
 Commande	Rôle
 git clone ...	Télécharge le code
@@ -143,12 +143,17 @@ pip install -r requirements.txt	Installe les dépendances
 copy .env.example .env	Copie le modèle de configuration
 notepad .env	Ouvre le fichier pour mettre TA clé
 python main.py	Lance le script
+
 ⚠️ SI UNE COMMANDE COINCE
+
 Problème	Solution
 'git' n'est pas reconnu	Télécharge le ZIP à la place (via le bouton "Code" sur GitHub)
 'python' n'est pas reconnu	Remplace python par py dans toute la ligne
 'venv\Scripts\activate' ne marche pas sous PowerShell	Utilise .\venv\Scripts\Activate.ps1 à la place
 L'activation est bloquée par PowerShell	Lance d'abord : Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+Pour Linux / Chromebook
+
 🐧 LA MÊME POUR LINUX / CHROMEBOOK (au cas où)
 bash
 git clone https://github.com/wallet888/blackberry-osint.git && cd blackberry-osint && python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt && cp .env.example .env && nano .env && python3 main.py
