@@ -1,8 +1,7 @@
-#by niquetamadrew 888 wallet 
 #!/usr/bin/env python3
 # ╔══════════════════════════════════════════════════════╗
 # ║        BLACK BERRY BETA - OSINT FRAMEWORK          ║
-# ║               WALLET / 888                         ║
+# ║               WALLET • 888                         ║
 # ╚══════════════════════════════════════════════════════╝
 
 import os
@@ -10,30 +9,13 @@ import sys
 import time
 import random
 import string
-import threading
 from datetime import datetime
 from config import AUTO_SAVE, DATA_DIR, MAX_RESULTS, TIMEOUT
 from api_client import search_person
 from utils import sauvegarder_fiche, afficher_resultat, export_csv, export_pdf
 
 # ==========================================
-# 1. MUSIQUE (Optionnelle)
-# ==========================================
-try:
-    import pygame
-    PYGAME_OK = True
-except ImportError:
-    PYGAME_OK = False
-
-MUSIC_DIR = "music"
-MUSIC_ON = False
-music_thread = None
-music_paused = False
-current_track = ""
-playlist = []
-
-# ==========================================
-# 2. COULEURS ET THEMES
+# 1. COULEURS
 # ==========================================
 R = '\033[0;31m'
 G = '\033[0;32m'
@@ -44,126 +26,14 @@ P = '\033[0;35m'
 W = '\033[0m'
 
 USER_NAME = ""
-THEME = "PURPLE"        # Thème par défaut
-ANIMATION_ON = True     # Matrix rain au démarrage ?
+THEME = "PURPLE"
+ANIMATION_ON = True
 
 # ==========================================
-# 3. FONCTIONS MUSICALES (inchangées)
+# 2. EFFET MATRIX RAIN (amélioré)
 # ==========================================
-def ensure_mixer_init():
-    if PYGAME_OK and not pygame.mixer.get_init():
-        pygame.mixer.init()
-
-def update_playlist():
-    global playlist
-    playlist = []
-    if os.path.exists(MUSIC_DIR):
-        for f in os.listdir(MUSIC_DIR):
-            if f.lower().endswith('.mp3'):
-                playlist.append(f)
-    return playlist
-
-def jouer_morceau(track_path):
-    global current_track
-    if PYGAME_OK:
-        ensure_mixer_init()
-        pygame.mixer.music.load(track_path)
-        pygame.mixer.music.play()
-        current_track = os.path.basename(track_path)
-
-def play_random():
-    update_playlist()
-    if playlist:
-        jouer_morceau(os.path.join(MUSIC_DIR, random.choice(playlist)))
-
-def play_music_thread():
-    global MUSIC_ON, music_paused
-    ensure_mixer_init()
-    while MUSIC_ON:
-        if not pygame.mixer.music.get_busy() and not music_paused:
-            play_random()
-        time.sleep(0.5)
-    pygame.mixer.music.stop()
-
-def start_music():
-    global MUSIC_ON, music_thread, music_paused
-    if not PYGAME_OK:
-        print(f"{R}[!] pygame non installé. pip install pygame{W}")
-        return
-    update_playlist()
-    if not playlist:
-        print(f"{R}[!] Aucun fichier mp3 dans '{MUSIC_DIR}/'{W}")
-        return
-    if not MUSIC_ON:
-        MUSIC_ON = True
-        music_paused = False
-        music_thread = threading.Thread(target=play_music_thread, daemon=True)
-        music_thread.start()
-        print(f"\n{G}[✓] Musique lancée (playlist aléatoire){W}")
-    else:
-        MUSIC_ON = False
-        if music_thread:
-            music_thread.join(timeout=1)
-        print(f"\n{G}[✓] Musique arrêtée{W}")
-
-def pause_music():
-    global music_paused
-    if PYGAME_OK and MUSIC_ON:
-        if music_paused:
-            pygame.mixer.music.unpause()
-            music_paused = False
-            print(f"\n{G}[✓] Musique reprise{W}")
-        else:
-            pygame.mixer.music.pause()
-            music_paused = True
-            print(f"\n{Y}[!] Musique en pause{W}")
-
-def next_music():
-    if PYGAME_OK and MUSIC_ON:
-        play_random()
-        print(f"\n{G}[✓] Morceau suivant : {current_track}{W}")
-
-def select_track():
-    update_playlist()
-    if not playlist:
-        print(f"\n{R}[X] Aucune musique dans '{MUSIC_DIR}/'{W}")
-        return
-    print(f"\n{Y}┌── Playlist ({len(playlist)}) ──{W}")
-    for i, t in enumerate(playlist, 1):
-        print(f"  {C}[{i}]{W} {t}")
-    try:
-        choix = int(input(f"{Y}[?] Numéro du morceau (0 = retour) : {W}"))
-        if choix == 0:
-            return
-        if 1 <= choix <= len(playlist):
-            chemin = os.path.join(MUSIC_DIR, playlist[choix-1])
-            if not os.path.exists(chemin):
-                print(f"\n{R}[X] Fichier introuvable{W}")
-                return
-            jouer_morceau(chemin)
-            if not MUSIC_ON:
-                start_music()
-            print(f"\n{G}[✓] Lecture de {playlist[choix-1]}{W}")
-        else:
-            print(f"\n{R}[X] Numéro invalide{W}")
-    except ValueError:
-        print(f"\n{R}[X] Entrée invalide{W}")
-
-def music_status_line():
-    if not PYGAME_OK:
-        return ""
-    if MUSIC_ON:
-        if music_paused:
-            return f"{Y}[PAUSE]{W} "
-        else:
-            return f"{G}[♪ {current_track[:20]}]{W} "
-    else:
-        return f"{R}[MUSIC OFF]{W} "
-
-# ==========================================
-# 4. EFFETS HACKER (Matrix rain + boot)
-# ==========================================
-def matrix_rain(duration=3):
+def matrix_rain(duration=4):
+    """Effet Matrix avec descente de caractères."""
     if not ANIMATION_ON:
         return
     os.system('clear')
@@ -178,8 +48,8 @@ def matrix_rain(duration=3):
     for _ in range(num_cols):
         drops.append({
             'y': random.randint(-rows, -1),
-            'speed': random.uniform(0.4, 1.2),
-            'tail': random.randint(3, 12),
+            'speed': random.uniform(0.3, 1.0),
+            'tail': random.randint(3, 15),
             'head_char': random.choice(string.ascii_letters + string.digits + "!@#$%^&*()_+-=[]{}|;:,.<>?/\\")
         })
     end_time = time.time() + duration
@@ -199,32 +69,36 @@ def matrix_rain(duration=3):
             drop['y'] += drop['speed']
             if drop['y'] - drop['tail'] > rows:
                 drop['y'] = random.randint(-10, -1)
-                drop['speed'] = random.uniform(0.4, 1.2)
-                drop['tail'] = random.randint(3, 12)
+                drop['speed'] = random.uniform(0.3, 1.0)
+                drop['tail'] = random.randint(3, 15)
                 drop['head_char'] = random.choice(string.ascii_letters + string.digits + "!@#$%^&*()_+-=[]{}|;:,.<>?/\\")
         for row in screen:
             print("".join(row))
-        time.sleep(0.05)
+        time.sleep(0.04)
     print("\033[0m")
 
+# ==========================================
+# 3. ÉCRAN DE BOOT HACKER
+# ==========================================
 def hacker_boot():
-    """Écran de boot style hacker avec pourcentage."""
+    """Écran de boot avec barre de progression et modules."""
+    if not ANIMATION_ON:
+        return
     os.system('clear')
     print(f"{G}Initialisation du système BLACK BERRY...{W}\n")
-    modules = ["Kernel", "Network", "API", "UI", "Audio", "Security"]
+    modules = ["Kernel", "Network", "API", "UI", "Security", "Database"]
     for i in range(1, 101):
-        # Barre de progression
         bar = "█" * (i // 2) + "░" * (50 - i // 2)
         print(f"\r{G}[{bar}] {i}%{W}", end="")
-        if i % 15 == 0 and i < 100:
+        if i % 12 == 0 and i < 100:
             mod = random.choice(modules)
             print(f"\n{Y}[+] Chargement du module {mod}... OK{W}")
-        time.sleep(random.uniform(0.02, 0.08))
+        time.sleep(random.uniform(0.02, 0.07))
     print(f"\n\n{G}✅ Système opérationnel. Lancement en cours...{W}")
-    time.sleep(1)
+    time.sleep(1.5)
 
 # ==========================================
-# 5. DEMANDE DU PRÉNOM
+# 4. DEMANDE DU PRÉNOM
 # ==========================================
 def demander_prenom():
     global USER_NAME
@@ -263,13 +137,12 @@ def demander_prenom():
     time.sleep(2)
 
 # ==========================================
-# 6. SPLASH SCREEN (avec boot)
+# 5. SPLASH SCREEN AVEC CRÉDITS
 # ==========================================
 def splash():
     global USER_NAME
-    if ANIMATION_ON:
-        matrix_rain(3)
-        hacker_boot()
+    matrix_rain(4)
+    hacker_boot()
     demander_prenom()
     os.system('clear')
     print(f"""
@@ -301,14 +174,13 @@ def splash():
 ║                                                              ║
 ╚══════════════════════════════════════════════════════════════╝{W}
 """)
-    time.sleep(2.5)
+    time.sleep(3)
 
 # ==========================================
-# 7. BANNIÈRE AVEC STATUT MUSIQUE
+# 6. BANNIÈRE
 # ==========================================
 def banner():
     os.system('clear')
-    status = music_status_line()
     print(f"""
 {P}╔══════════════════════════════════════════════════════════════╗
 ║  {Y}BLACK BERRY BETA {W}| {C}WALLET • 888 {W}| {G}Discord: niquetamadrew{P}        ║
@@ -329,11 +201,10 @@ def banner():
 ║    ╚═════╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝                  ║
 ║                                                              ║
 ╚══════════════════════════════════════════════════════════════╝
-{status}
 """)
 
 # ==========================================
-# 8. AFFICHAGE DES DONS
+# 7. AFFICHAGE DES DONS
 # ==========================================
 def afficher_dons():
     os.system('clear')
@@ -355,7 +226,7 @@ def afficher_dons():
     input(f"\n{Y}[?] Appuie sur Entrée pour revenir au menu...{W}")
 
 # ==========================================
-# 9. NOUVEAU MENU PARAMÈTRES (avec couleurs et plus d'options)
+# 8. MENU PARAMÈTRES (avec couleurs)
 # ==========================================
 def parametres():
     global AUTO_SAVE, MAX_RESULTS, TIMEOUT, THEME, ANIMATION_ON
@@ -408,8 +279,6 @@ def parametres():
             if th in ["PURPLE", "RED", "GREEN", "BLUE", "MATRIX"]:
                 THEME = th
                 print(f"\n{G}[✓] Thème changé en {THEME}{W}")
-                # On applique la couleur directement dans les messages (la variable P change)
-                # Nous gérerons la couleur via des conditions dans les affichages, mais ici on le garde en mémoire.
             else:
                 print(f"\n{R}[X] Thème invalide{W}")
             input(f"\n{Y}[?] Appuie sur Entrée...{W}")
@@ -431,7 +300,7 @@ def parametres():
             input(f"\n{Y}[?] Appuie sur Entrée...{W}")
 
 # ==========================================
-# 10. MENU PRINCIPAL (avec option Dons)
+# 9. MENU PRINCIPAL (sans touches musicales)
 # ==========================================
 def menu_principal():
     while True:
@@ -446,10 +315,8 @@ def menu_principal():
 ║  {G}[4]{W}  👤 CREDITS{P}                                             ║
 ║  {G}[5]{W}  💰 DONS (Soutenir le projet){P}                           ║
 ║  {R}[0]{W}  QUITTER{P}                                               ║
-║                                                              ║
-║  {Y}[M]{W} Play/Stop  {Y}[P]{W} Pause  {Y}[N]{W} Suivant  {Y}[S]{W} Choisir morceau{P}    ║
 ╚══════════════════════════════════════════════════════════════╝{W}""")
-        choix = input(f"{Y}[?] BLACK BERRY > {W}").strip().upper()
+        choix = input(f"{Y}[?] BLACK BERRY > {W}").strip()
         if choix == '0':
             print("\n👋 Au revoir, revenez vite !")
             sys.exit(0)
@@ -463,24 +330,12 @@ def menu_principal():
             credits()
         elif choix == '5':
             afficher_dons()
-        elif choix == 'M':
-            start_music()
-            input("Appuyez sur Entrée pour continuer...")
-        elif choix == 'P':
-            pause_music()
-            input("Appuyez sur Entrée pour continuer...")
-        elif choix == 'N':
-            next_music()
-            input("Appuyez sur Entrée pour continuer...")
-        elif choix == 'S':
-            select_track()
-            input("Appuyez sur Entrée pour continuer...")
         else:
             print("\n❌ Choix invalide.")
             input("Appuyez sur Entrée pour continuer...")
 
 # ==========================================
-# 11. FONCTIONS RECHERCHE ET GESTION FICHIERS (inchangées)
+# 10. FONCTIONS RECHERCHE ET GESTION
 # ==========================================
 def clear():
     os.system('clear' if os.name == 'posix' else 'cls')
@@ -598,7 +453,7 @@ def credits():
     input("\nAppuyez sur Entrée pour revenir...")
 
 # ==========================================
-# 12. POINT D'ENTRÉE
+# 11. POINT D'ENTRÉE
 # ==========================================
 if __name__ == "__main__":
     splash()
