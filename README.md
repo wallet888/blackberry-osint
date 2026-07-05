@@ -157,3 +157,5 @@ Pour Linux / Chromebook
 🐧 LA MÊME POUR LINUX / CHROMEBOOK (au cas où)
 bash
 git clone https://github.com/wallet888/blackberry-osint.git && cd blackberry-osint && python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt && cp .env.example .env && nano .env && python3 main.py
+
+si quelque chose ne marche pas contacter moi sur mon dc : niquetamadrew
