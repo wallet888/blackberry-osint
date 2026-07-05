@@ -127,27 +127,28 @@ ModuleNotFoundError: No module named 'dotenv'	Refais pip install -r requirements
 ✅ RÉSUMÉ – LA COMMANDE ULTIME (mais pas magique)
 Pour Linux / Chromebook :
 
-bash
-git clone https://github.com/wallet888/blackberry-osint.git
-cd blackberry-osint
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-cp .env.example .env
-nano .env   # ← remplace ta_cle_ici par TA clé
-python3 main.py
 
 
-Pour Windows :
-
+🚀 COMMANDE ULTIME POUR WINDOWS (COPIE-COLLE UNIQUE)
 cmd
-git clone https://github.com/wallet888/blackberry-osint.git
-cd blackberry-osint
-python -m venv venv
-venv\Scripts\activate
-pip install -r requirements.txt
-copy .env.example .env
-notepad .env   # ← remplace ta_cle_ici par TA clé
-python main.py
-Maintenant, tu peux coller ce guide dans ton README ou dans un fichier INSTALL.md – et même les débutants s’en sortiront. 😉
-
+git clone https://github.com/wallet888/blackberry-osint.git && cd blackberry-osint && python -m venv venv && venv\Scripts\activate && pip install -r requirements.txt && copy .env.example .env && notepad .env && python main.py
+🔥 CE QUE ÇA FAIT EN DÉTAIL
+Commande	Rôle
+git clone ...	Télécharge le code
+&&	Passe à la suivante si la précédente a réussi
+cd blackberry-osint	Entre dans le dossier
+python -m venv venv	Crée l'environnement virtuel
+venv\Scripts\activate	L'active (pour CMD)
+pip install -r requirements.txt	Installe les dépendances
+copy .env.example .env	Copie le modèle de configuration
+notepad .env	Ouvre le fichier pour mettre TA clé
+python main.py	Lance le script
+⚠️ SI UNE COMMANDE COINCE
+Problème	Solution
+'git' n'est pas reconnu	Télécharge le ZIP à la place (via le bouton "Code" sur GitHub)
+'python' n'est pas reconnu	Remplace python par py dans toute la ligne
+'venv\Scripts\activate' ne marche pas sous PowerShell	Utilise .\venv\Scripts\Activate.ps1 à la place
+L'activation est bloquée par PowerShell	Lance d'abord : Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+🐧 LA MÊME POUR LINUX / CHROMEBOOK (au cas où)
+bash
+git clone https://github.com/wallet888/blackberry-osint.git && cd blackberry-osint && python3 -m venv venv && source venv/bin/activate && pip install -r requirements.txt && cp .env.example .env && nano .env && python3 main.py
